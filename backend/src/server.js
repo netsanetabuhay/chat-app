@@ -14,14 +14,17 @@ const __dirname = path.dirname(__filename);
 
 // API routes
 import messageRoutes from "./routes/message.route.js";
+import authRoutes from "./routes/auth.route.js";
+
 app.use("/api/message", messageRoutes);
+app.use("/api/auth", authRoutes);
 
 // Serve frontend in production
 if (process.env.NODE_ENV === "PRODUCTION") {
   app.use(express.static(path.join(__dirname, "../../frontend/dist")));
 
-  // ✅ Use regex for catch-all
-  app.get(/.*/, (req, res) => {
+  // Catch-all for any non-API routes to serve index.html
+  app.get(/^\/(?!api).*/, (req, res) => {
     res.sendFile(path.join(__dirname, "../../frontend/dist/index.html"));
   });
 }
